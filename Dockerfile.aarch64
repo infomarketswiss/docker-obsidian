@@ -23,7 +23,7 @@ RUN \
   DEBIAN_FRONTEND=noninteractive \
   echo "**** install obsidian ****" && \
   if [ -z ${OBSIDIAN_VERSION+x} ]; then \
-    OBSIDIAN_VERSION=$(curl -sX GET "https://api.github.com/repos/obsidianmd/obsidian-releases/releases/latest"| awk '/tag_name/{print $4;exit}' FS='[""]'); \
+    OBSIDIAN_VERSION=$(curl -sX GET "https://api.github.com/repos/obsidianmd/obsidian-releases/releases/latest"| jq -r '.tag_name'); \
   fi && \
   apt-get install -y --no-install-recommends \
     chromium \
