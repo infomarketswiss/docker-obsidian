@@ -7,6 +7,13 @@ release_type: stable
 release_tag: latest
 ls_branch: main
 build_armhf: false
+external_artifact_check: |
+  assets=$(curl -u "${{ '{{' }} secrets.CR_USER {{ '}}' }}:${{ '{{' }} secrets.CR_PAT {{ '}}' }}" -sX GET "https://api.github.com/repos/obsidianmd/obsidian-release/releases/tags/${EXT_RELEASE}" | jq -r '.assets[].browser_download_url')
+  if grep -q "arm64.AppImage" <<< "${assets}"; then
+    artifacts_found="true"
+  else
+    artifacts_found="false"
+  fi
 repo_vars:
   - EXT_USER = 'obsidianmd'
   - EXT_REPO = 'obsidian-releases'
